@@ -24,13 +24,13 @@ const char* getISODate(float currentTime) {
 void renderOrbitalSim3D(OrbitalSim *sim, int index)
 {
     
-    DrawSphere(Vector3Scale(sim->ptoOrbList[index].pos, 0.00000000001), sim->ptoOrbList[index].radius, sim->ptoOrbList[index].color);
+    DrawSphere(Vector3Scale(sim->ptoOrbList[index].pos, 1.0E-11), sim->ptoOrbList[index].radius, sim->ptoOrbList[index].color);
     
 }
 
 void renderOrbitalSim2D(OrbitalSim *sim, int index)
 {
-        DrawPoint3D(Vector3Scale(sim->ptoOrbList[index].pos, 0.00000000001), sim->ptoOrbList[index].color);
+        DrawPoint3D(Vector3Scale(sim->ptoOrbList[index].pos, 1.0E-11), sim->ptoOrbList[index].color);
     }
 
 void renderSimulation(OrbitalSim *sim) {
@@ -38,6 +38,7 @@ void renderSimulation(OrbitalSim *sim) {
     {
         renderOrbitalSim2D(sim, i);
         renderOrbitalSim3D(sim, i);
+        DrawFPS(100, 100);
     }
 }
 

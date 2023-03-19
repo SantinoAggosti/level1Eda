@@ -14,13 +14,11 @@
 
 struct OrbitalBody
 {
-    const char *name; // Nombre
     float mass;		  // Masa en Kg
     float radius;	  // radio en metros
     Color color;	  // Color
     Vector3 pos;      // Posición (x,y,z) en metros
     Vector3 vel;      // Velocidad (Vx,Vy,Vz) en metros por segundo
-    Vector3 force;    // Fuerza ejercida sobre el cuerpo
     Vector3 acc;      // Aceleración actual del cuerpo
 
 };
@@ -46,7 +44,7 @@ float scaleRadius(float radius);
 
 //Vectorial Calculations
 void calcAcc(OrbitalSim* sim);
-Vector3 calcAij(OrbitalBody body_1, OrbitalBody body_2);
+Vector3 calcAij(OrbitalBody body_1, OrbitalBody body_2, float distance);
 void calcVel(OrbitalSim* sim);
 void calcPosition(OrbitalSim* sim);
 

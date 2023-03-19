@@ -31,81 +31,81 @@
 #define GRAVITATIONAL_CONSTANT 6.6743E-11F
 #define ASTEROIDS_MEAN_RADIUS 4E11F
 
-#define NBODIES 9
+#define NBODIES 100
 
 
 OrbitalBody solSystem[] = {
     {
-        "Sol",
         1988500E24F,
         695700E3F,
         GOLD,
         {-1.283674643550172E+09F, 2.589397504295033E+07F, 5.007104996950605E+08F},
         {-5.809369653802155E-00F, 2.513455442031695E-01F, -1.461959576560110E+01F},
+        0
     },
     {
-        "Mercurio",
         0.3302E24F,
         2440E3F,
         GRAY,
         {5.242617205495467E+10F, -5.398976570474024E+09F, -5.596063357617276E+09F},
         {-3.931719860392732E+03F, 4.493726800433638E+03F, 5.056613955108243E+04F},
+        0
     },
     {
-        "Venus",
         4.8685E24F,
         6051.84E3F,
         BEIGE,
         {-1.143612889654620E+10F, 2.081921801192194E+09F, 1.076180391552140E+11F},
         {-3.498958532524220E+04F, 1.971012081662609E+03F, -3.509011592387367E+03F},
+        0
     },
     {
-        "Tierra",
         5.97219E24F,
         6371.01E3F,
         BLUE,
         {-2.741147560901964E+10F, 1.907499306293577E+07F, 1.452697499646169E+11F},
         {-2.981801522121922E+04F, 1.781036907294364E00F, -5.415519940416356E+03F},
+        0
     },
     {
-        "Marte",
         0.64171E24F,
         3389.92E3F,
         RED,
         {-1.309510737126251E+11F, -7.714450109843910E+08F, -1.893127398896606E+11F},
         {2.090994471204196E+04F, -7.557181497936503E02F, -1.160503586188451E+04F},
+        0
     },
     {
-        "Jupiter",
         1898.18722E24F,
         69911E3F,
         BEIGE,
         {6.955554713494443E+11F, -1.444959769995748E+10F, -2.679620040967891E+11F},
         {4.539612624165795E+03F, -1.547160200183022E+02F, 1.280513202430234E+04F},
+        0
     },
     {
-        "Saturno",
         568.34E24F,
         58232E3F,
         LIGHTGRAY,
         {1.039929189378534E+12F, -2.303100000185490E+10F, -1.056650101932204E+12F},
         {6.345150006906061E+03F, -3.704447055166629E+02F, 6.756117358248296E+03F},
+        0
     },
     {
-        "Urano",
         86.813E24F,
         25362E3F,
         SKYBLUE,
         {2.152570437700128E+12F, -2.039611192913723E+10F, 2.016888245555490E+12F},
         {-4.705853565766252E+03F, 7.821724397220797E+01F, 4.652144641704226E+03F},
+        0
     },
     {
-        "Neptuno",
         102.409E24F,
         24624E3F,
         DARKBLUE,
         {4.431790029686977E+12F, -8.954348456482631E+10F, -6.114486878028781E+11F},
         {7.066237951457524E+02F, -1.271365751559108E+02F, 5.417076605926207E+03F},
+        0
     },
 };
 
@@ -114,7 +114,6 @@ OrbitalBody solSystem[] = {
 // Alpha Centauri system
 OrbitalBody alphCentauriSystem[] = {
     {
-        "Alfa Centauri A",
         2167000E24F,
         834840.F,
         YELLOW,
@@ -122,7 +121,6 @@ OrbitalBody alphCentauriSystem[] = {
         {0, 0, 7.120E+03F},
     },
     {
-        "Alfa Centauri B",
         1789000E24F,
         626130.F,
         GOLD,
@@ -164,7 +162,6 @@ void fillOrbBodiesList(OrbitalSim *sim, OrbitalBody * ephList, int nEphemerides)
     {
         sim->ptoOrbList[i] = ephList[i];
         sim->ptoOrbList[i].radius = scaleRadius(sim->ptoOrbList[i].radius);
-
 
     }
     float maxMass = getMostMassiveBody(sim, nEphemerides);
@@ -208,44 +205,39 @@ void placeAsteroid(OrbitalBody* body, float centerMass)
     // Fill in with your own fields:
      body->mass = 1E12F;  // Typical asteroid weight: 1 billion tons
      body->radius = scaleRadius(2E3F); // Typical asteroid radius: 2km
-     body->color = GRAY;
+     body->color = GREEN;
      body->pos = {r * cosf(phi), 0, r * sinf(phi)};
      body->vel = {-v * sinf(phi), vy, v * cosf(phi)};
-     body->name = "Asteroid";
 }
 
 
-void calcAcc(OrbitalSim* sim)   //Calcula la aceleración
-{
+void calcAcc(OrbitalSim* sim) {
+    Vector3 Aji;
+    float distance;
 
-    for (int i = 0; i < NBODIES; i++) {
-        if (sim->ptoOrbList[i].mass != 0) {
-            for (int j = 0; j < NBODIES; j++) {
-                if (j != i) {
-                    sim->ptoOrbList[i].acc = Vector3Add(calcAij(sim->ptoOrbList[i],sim->ptoOrbList[j]), sim->ptoOrbList[i].acc);
-                }
-             }
+    for (int i = 0; i < NBODIES; i++)
+    {
+        sim->ptoOrbList[i].acc = Vector3Zero();
+    }
+
+    for (int i = 0; i < NBODIES; i++)
+    {
+        for (int j = i+1; j < NBODIES; j++)
+        {
+            distance = Vector3Length(Vector3Subtract(sim->ptoOrbList[i].pos, sim->ptoOrbList[j].pos));
+            sim->ptoOrbList[i].acc = Vector3Add(sim->ptoOrbList[i].acc, calcAij(sim->ptoOrbList[i], sim->ptoOrbList[j], distance));
+            Aji = calcAij(sim->ptoOrbList[j], sim->ptoOrbList[i], distance);
+            sim->ptoOrbList[j].acc = Vector3Add(sim->ptoOrbList[j].acc, Aji);
         }
+        //sim->ptoOrbList[j].acc = Aji;
     }
 }
 
+Vector3 calcAij(OrbitalBody bodyi, OrbitalBody bodyj, float distance) {
+    float scalarMult = (-GRAVITATIONAL_CONSTANT * bodyj.mass)/(distance*distance*distance);
+    Vector3 vectMult = Vector3Subtract(bodyi.pos, bodyj.pos);
+    return Vector3Scale(vectMult, scalarMult);
 
-Vector3 calcAij (OrbitalBody body_1, OrbitalBody body_2)
-{
-    Vector3 v1 = body_1.pos;
-    Vector3 v2 = body_2.pos;
-
-    float m2 = body_2.mass;
-
-    //Santino: Hice estas modificaciones al codigo siguiendo las buenas practicas y simplificando un poco las cantidades de operaciones
-    // O codigo que se repite por lo menos //BORRAR COMENTARIO DESPUES, tan solo es para registrar mis cambios.
-    float distancia = Vector3Distance(v1, v2);
-
-    float enumerador = -GRAVITATIONAL_CONSTANT * m2;
-    float denominador = distancia * distancia * distancia;
-
-    Vector3 Aij = Vector3Scale(Vector3Subtract(v1, v2), (enumerador/(denominador)));
-    return Aij;
 }
 
 void calcVel(OrbitalSim * sim)
@@ -270,15 +262,13 @@ for(int i = 0; i < NBODIES; i++){
 }
 
 // Simulates a timestep
+// Simulates a timestep
 void updateOrbitalSim(OrbitalSim* sim)
 {
-
     sim->time_total += sim->time_step;
+    calcAcc(sim);
     calcVel(sim);
     calcPosition(sim);
-    calcAcc(sim);
-
-
 }
 
 void freeOrbitalSim(OrbitalSim *sim)
