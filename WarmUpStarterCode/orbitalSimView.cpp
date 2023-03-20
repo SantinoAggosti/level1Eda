@@ -7,6 +7,7 @@
 
 #include <time.h>
 #include "orbitalSimView.h"
+
 const char* getISODate(float currentTime) {
     // Epoch: 2022-01-01
     struct tm epoch_tm = { 0, 0, 0, 1, 0, 122 };
@@ -31,14 +32,13 @@ void renderOrbitalSim3D(OrbitalSim *sim, int index)
 void renderOrbitalSim2D(OrbitalSim *sim, int index)
 {
         DrawPoint3D(Vector3Scale(sim->ptoOrbList[index].pos, 1.0E-11), sim->ptoOrbList[index].color);
-    }
+}
 
 void renderSimulation(OrbitalSim *sim) {
     for (int i = 0; i < sim->bodys; i++)
     {
         renderOrbitalSim2D(sim, i);
         renderOrbitalSim3D(sim, i);
-        DrawFPS(100, 100);
     }
 }
 

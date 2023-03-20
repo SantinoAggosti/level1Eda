@@ -11,6 +11,7 @@
 
 #include "C:\dev\vcpkg\packages\raylib_x64-windows\include\raylib.h"
 #include "C:\dev\vcpkg\packages\raylib_x64-windows\include\raymath.h"
+#include <stdio.h>
 
 struct OrbitalBody
 {
@@ -29,7 +30,7 @@ struct OrbitalSim
    float time_total;
    int bodys;
    OrbitalBody * ptoOrbList; 
-
+   char* date;
 };
 
 OrbitalSim *makeOrbitalSim(float timeStep);

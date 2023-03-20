@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="H:\Todo\Escuela\2023\EDA\Level1V2\level1Eda\WarmUpStarterCode\main_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="H:\Todo\Escuela\2023\EDA\Level1V2\level1Eda\WarmUpStarterCode\orbitalSim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="H:\Todo\Escuela\2023\EDA\Level1V2\level1Eda\WarmUpStarterCode\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0A3D07C2-9070-348E-B457-A0CB00025C3D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

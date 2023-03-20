@@ -13,5 +13,6 @@
 void renderOrbitalSim3D(OrbitalSim *sim);
 void renderOrbitalSim2D(OrbitalSim *sim);
 void renderSimulation(OrbitalSim* sim);
+const char* getISODate(float currentTime);
 
 #endif

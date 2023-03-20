@@ -10,6 +10,7 @@
 #include "orbitalSim.h"
 #include "orbitalSimView.h"
 
+
 #define SECONDS_PER_DAY 86400.0F
 
 int main()
@@ -37,9 +38,6 @@ int main()
 
     OrbitalSim *simulation = makeOrbitalSim(timeStep);
 
-
-
-
     // Game loop
     while (!WindowShouldClose())
     {
@@ -52,7 +50,8 @@ int main()
         // Render
         BeginDrawing();          //Biblioteca
         ClearBackground(BLACK);  //Biblioteca
-
+        DrawText(getISODate(simulation->time_total), 10, 40, 30, WHITE);
+        DrawFPS(10,10);
         BeginMode3D(camera);     //Biblioteca
         //renderOrbitalSim3D(sim); //Nuestro
         

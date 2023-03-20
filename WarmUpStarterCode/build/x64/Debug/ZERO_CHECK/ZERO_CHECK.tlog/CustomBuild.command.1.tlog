@@ -1,0 +1,10 @@
+^H:\TODO\ESCUELA\2023\EDA\LEVEL1V2\LEVEL1EDA\WARMUPSTARTERCODE\BUILD\CMAKEFILES\8261E167A784A8B7349419039A97AA1E\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SH:/Todo/Escuela/2023/EDA/Level1V2/level1Eda/WarmUpStarterCode -BH:/Todo/Escuela/2023/EDA/Level1V2/level1Eda/WarmUpStarterCode/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file H:/Todo/Escuela/2023/EDA/Level1V2/level1Eda/WarmUpStarterCode/build/WarmUpStarterCode.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

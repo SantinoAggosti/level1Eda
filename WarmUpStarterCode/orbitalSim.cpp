@@ -157,16 +157,17 @@ OrbitalSim* makeOrbitalSim(float timeStep)      //Recibe el valor del timestep y
     return sim;
 }
 
-void fillOrbBodiesList(OrbitalSim *sim, OrbitalBody * ephList, int nEphemerides) {
-    for (int i = 0; i < nEphemerides; i++)
+void fillOrbBodiesList(OrbitalSim *sim, OrbitalBody * ephList, int nEphemerides) {  //Llena la lista de los Orbitals Bodys en la simulación
+    for (int i = 0; i < nEphemerides; i++)      //Setea los planetas
     {
         sim->ptoOrbList[i] = ephList[i];
         sim->ptoOrbList[i].radius = scaleRadius(sim->ptoOrbList[i].radius);
 
     }
-    float maxMass = getMostMassiveBody(sim, nEphemerides);
+    float maxMass = getMostMassiveBody(sim, nEphemerides);  
 
-    for (int i = nEphemerides; i < NBODIES; i++) {
+    for (int i = nEphemerides; i < NBODIES; i++)    //Setea los asteroides
+    {
         placeAsteroid(&(sim->ptoOrbList[i]), maxMass);
         sim->ptoOrbList[i].radius = scaleRadius(sim->ptoOrbList[i].radius);
     }
@@ -174,7 +175,8 @@ void fillOrbBodiesList(OrbitalSim *sim, OrbitalBody * ephList, int nEphemerides)
 
 // Esta Funcion asume que el cuerpo mas pesado se encontrara dentro de los cuerpos de ephemirides y no 
 // Entre los demas asteroides por ejemplo.
-float getMostMassiveBody(OrbitalSim *sim, int nEphemerides) {
+float getMostMassiveBody(OrbitalSim *sim, int nEphemerides)     //Obtiene el cuerpo más masivo
+{
     float maxMass = 0;
     for (int i = 0; i < nEphemerides; i++)
     {
@@ -196,7 +198,7 @@ void placeAsteroid(OrbitalBody* body, float centerMass)
     float phi = getRandomFloat(0, 2 * M_PI);
 
     // Surprise!
-    // phi = 0;
+    //phi = 0;
 
     // https://en.wikipedia.org/wiki/Circular_orbit#Velocity
     float v = sqrtf(GRAVITATIONAL_CONSTANT * centerMass / r) * getRandomFloat(0.6F, 1.2F);
@@ -220,6 +222,7 @@ void calcAcc(OrbitalSim* sim) {
         sim->ptoOrbList[i].acc = Vector3Zero();
     }
 
+
     for (int i = 0; i < NBODIES; i++)
     {
         for (int j = i+1; j < NBODIES; j++)
@@ -231,13 +234,21 @@ void calcAcc(OrbitalSim* sim) {
         }
         //sim->ptoOrbList[j].acc = Aji;
     }
+
 }
 
 Vector3 calcAij(OrbitalBody bodyi, OrbitalBody bodyj, float distance) {
-    float scalarMult = (-GRAVITATIONAL_CONSTANT * bodyj.mass)/(distance*distance*distance);
-    Vector3 vectMult = Vector3Subtract(bodyi.pos, bodyj.pos);
-    return Vector3Scale(vectMult, scalarMult);
-
+    float denominador = distance * distance * distance;
+    if (denominador == 0)
+    {
+        return Vector3Zero();
+    }
+    else
+    {
+        float scalarMult = (-GRAVITATIONAL_CONSTANT * bodyj.mass) / (denominador);
+        Vector3 vectMult = Vector3Subtract(bodyi.pos, bodyj.pos);
+        return Vector3Scale(vectMult, scalarMult);
+    }
 }
 
 void calcVel(OrbitalSim * sim)
@@ -265,6 +276,7 @@ for(int i = 0; i < NBODIES; i++){
 // Simulates a timestep
 void updateOrbitalSim(OrbitalSim* sim)
 {
+
     sim->time_total += sim->time_step;
     calcAcc(sim);
     calcVel(sim);

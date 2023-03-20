@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>H:\Todo\Escuela\2023\EDA\Level1V2\level1Eda\WarmUpStarterCode\build\x64\Debug\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>H:\Todo\Escuela\2023\EDA\Level1V2\level1Eda\WarmUpStarterCode\build\Debug\orbitalsim.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>H:\Todo\Escuela\2023\EDA\Level1V2\level1Eda\WarmUpStarterCode\build\Debug\orbitalsim_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>H:\Todo\Escuela\2023\EDA\Level1V2\level1Eda\WarmUpStarterCode\build\x64\Debug\ALL_BUILD</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>
