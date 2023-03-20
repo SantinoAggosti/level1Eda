@@ -10,8 +10,9 @@
 
 #include "orbitalSim.h"
 
-void renderOrbitalSim3D(OrbitalSim *sim);
-void renderOrbitalSim2D(OrbitalSim *sim);
+void SaveScaledPositions(Vector3* list, OrbitalSim* sim);
+void renderOrbitalSim3D(OrbitalSim *sim,int index, Vector3 pos);
+void renderOrbitalSim2D(OrbitalSim *sim, int index, Vector3 pos);
 void renderSimulation(OrbitalSim* sim);
 const char* getISODate(float currentTime);
 

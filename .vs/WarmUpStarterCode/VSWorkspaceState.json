@@ -1,0 +1,12 @@
+{
+  "OutputFoldersPerTargetSystem": {
+    "Local Machine": [
+      "WarmUpStarterCode\\out\\build\\x64-Debug",
+      "WarmUpStarterCode\\out\\install\\x64-Debug",
+      "WarmUpStarterCode\\out\\build\\x64-Release",
+      "WarmUpStarterCode\\out\\install\\x64-Release",
+      "WarmUpStarterCode\\out\\build\\arm64-Debug",
+      "WarmUpStarterCode\\out\\install\\arm64-Debug"
+    ]
+  }
+}

@@ -28,11 +28,6 @@
 #include "orbitalSim.h"
 #include <stdio.h>
 
-#define GRAVITATIONAL_CONSTANT 6.6743E-11F
-#define ASTEROIDS_MEAN_RADIUS 4E11F
-
-#define NBODIES 100
-
 
 OrbitalBody solSystem[] = {
     {
@@ -109,8 +104,6 @@ OrbitalBody solSystem[] = {
     },
 };
 
-#define SOLARSYSTEM_BODYNUM (sizeof(solSystem) / sizeof(OrbitalBody))
-
 // Alpha Centauri system
 OrbitalBody alphCentauriSystem[] = {
     {
@@ -129,9 +122,6 @@ OrbitalBody alphCentauriSystem[] = {
     },
 };
 
-#define ALPHACENTAURISYSTEM_BODYNUM (sizeof(alphCentauriSystem) / sizeof(OrbitalBody))
-
-
 // Gets a random value between min and max
 float getRandomFloat(float min, float max)
 {
@@ -146,27 +136,28 @@ OrbitalSim* makeOrbitalSim(float timeStep)      //Recibe el valor del timestep y
     sim = (OrbitalSim*)malloc(sizeof(OrbitalSim));
     sim->time_total = 0;                         //Comienza el contador del tiempo
     sim->time_step = timeStep;                   //Setea el timestep
-    sim->bodys = NBODIES;                          //Setea la cantidad de cuerpos
+    sim->bodys = NBODIES;                        //Setea la cantidad de cuerpos totales (Incluyendo Asteroides)
+    sim->nEphemirides = SOLARSYSTEM_BODYNUM;     //Setea la cantidad de cuerpos celestiales (Sin incluir los asteroides)
 
     OrbitalBody * list;
     list = (OrbitalBody*)malloc(NBODIES * sizeof(OrbitalBody)); //Asigna memoria para crear la lista de todos los punteros a los bodys
     sim->ptoOrbList = list;
 
-    fillOrbBodiesList(sim, solSystem, SOLARSYSTEM_BODYNUM);
+    fillOrbBodiesList(sim, solSystem);
 
     return sim;
 }
 
-void fillOrbBodiesList(OrbitalSim *sim, OrbitalBody * ephList, int nEphemerides) {  //Llena la lista de los Orbitals Bodys en la simulación
-    for (int i = 0; i < nEphemerides; i++)      //Setea los planetas
+void fillOrbBodiesList(OrbitalSim *sim, OrbitalBody * ephList) {  //Llena la lista de los Orbitals Bodys en la simulación
+    for (int i = 0; i < sim->nEphemirides; i++)      //Setea los planetas
     {
         sim->ptoOrbList[i] = ephList[i];
         sim->ptoOrbList[i].radius = scaleRadius(sim->ptoOrbList[i].radius);
 
     }
-    float maxMass = getMostMassiveBody(sim, nEphemerides);  
+    float maxMass = getMostMassiveBody(sim);  
 
-    for (int i = nEphemerides; i < NBODIES; i++)    //Setea los asteroides
+    for (int i = sim->nEphemirides; i < NBODIES; i++)    //Setea los asteroides
     {
         placeAsteroid(&(sim->ptoOrbList[i]), maxMass);
         sim->ptoOrbList[i].radius = scaleRadius(sim->ptoOrbList[i].radius);
@@ -175,10 +166,10 @@ void fillOrbBodiesList(OrbitalSim *sim, OrbitalBody * ephList, int nEphemerides)
 
 // Esta Funcion asume que el cuerpo mas pesado se encontrara dentro de los cuerpos de ephemirides y no 
 // Entre los demas asteroides por ejemplo.
-float getMostMassiveBody(OrbitalSim *sim, int nEphemerides)     //Obtiene el cuerpo más masivo
+float getMostMassiveBody(OrbitalSim *sim)     //Obtiene el cuerpo más masivo
 {
     float maxMass = 0;
-    for (int i = 0; i < nEphemerides; i++)
+    for (int i = 0; i < sim->nEphemirides; i++)
     {
         if (sim->ptoOrbList[i].mass > maxMass) {
             maxMass = sim->ptoOrbList[i].mass;
@@ -232,7 +223,6 @@ void calcAcc(OrbitalSim* sim) {
             Aji = calcAij(sim->ptoOrbList[j], sim->ptoOrbList[i], distance);
             sim->ptoOrbList[j].acc = Vector3Add(sim->ptoOrbList[j].acc, Aji);
         }
-        //sim->ptoOrbList[j].acc = Aji;
     }
 
 }

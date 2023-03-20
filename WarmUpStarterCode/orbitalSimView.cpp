@@ -8,6 +8,15 @@
 #include <time.h>
 #include "orbitalSimView.h"
 
+
+
+void SaveScaledPositions(Vector3* list,OrbitalSim * sim) {
+    for (int i = 0; i < sim->bodys; i++)
+    {
+        list[i] = Vector3Scale(sim->ptoOrbList[i].pos, 1E-11);
+    }
+}
+
 const char* getISODate(float currentTime) {
     // Epoch: 2022-01-01
     struct tm epoch_tm = { 0, 0, 0, 1, 0, 122 };
@@ -22,24 +31,45 @@ const char* getISODate(float currentTime) {
 }
 
 
-void renderOrbitalSim3D(OrbitalSim *sim, int index)
+//Unicamente se van a dibujar como esferas los planetas.
+void renderOrbitalSim3D(OrbitalSim *sim, int index, Vector3 scaledPos)
 {
-    
-    DrawSphere(Vector3Scale(sim->ptoOrbList[index].pos, 1.0E-11), sim->ptoOrbList[index].radius, sim->ptoOrbList[index].color);
+
+    DrawSphere(scaledPos, sim->ptoOrbList[index].radius, sim->ptoOrbList[index].color);
     
 }
 
-void renderOrbitalSim2D(OrbitalSim *sim, int index)
+void renderOrbitalSim2D(OrbitalSim *sim, int index, Vector3 scaledPos)
 {
-        DrawPoint3D(Vector3Scale(sim->ptoOrbList[index].pos, 1.0E-11), sim->ptoOrbList[index].color);
+        DrawPoint3D(scaledPos, sim->ptoOrbList[index].color);
 }
 
-void renderSimulation(OrbitalSim *sim) {
-    for (int i = 0; i < sim->bodys; i++)
+//CON ESTE CORRE A 6FPS CON 1000 BODIES
+void renderSimulation(OrbitalSim* sim) {
+    Vector3 scaledPosition;
+    for (int i = 0; i < NBODIES; i++)
     {
-        renderOrbitalSim2D(sim, i);
-        renderOrbitalSim3D(sim, i);
+        scaledPosition = Vector3Scale(sim->ptoOrbList[i].pos, 1E-11);
+        renderOrbitalSim2D(sim, i, scaledPosition);
+        renderOrbitalSim3D(sim, i, scaledPosition);
     }
 }
+
+//CON ESTE CORRE A 40 FPS LOS 1000 BODIES, PERO LOS ASTEROIDES SON SOLO PUNTOS.
+/*
+void renderSimulation(OrbitalSim *sim) {
+    Vector3 scaledPosition;
+    for (int i = 0; i < sim->nEphemirides; i++)
+    {
+        scaledPosition = Vector3Scale(sim->ptoOrbList[i].pos, 1E-11);
+        renderOrbitalSim2D(sim, i, scaledPosition);
+        renderOrbitalSim3D(sim, i, scaledPosition);
+
+    } for (int j = sim->nEphemirides; j < NBODIES; j++)
+    {
+        scaledPosition = Vector3Scale(sim->ptoOrbList[j].pos, 1E-11);
+        renderOrbitalSim2D(sim, j, scaledPosition);
+    }
+}*/
 
 

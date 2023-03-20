@@ -13,6 +13,13 @@
 #include "C:\dev\vcpkg\packages\raylib_x64-windows\include\raymath.h"
 #include <stdio.h>
 
+#define GRAVITATIONAL_CONSTANT 6.6743E-11F
+#define ASTEROIDS_MEAN_RADIUS 4E11F
+#define NBODIES 1000
+
+#define SOLARSYSTEM_BODYNUM (sizeof(solSystem) / sizeof(OrbitalBody))
+#define ALPHACENTAURISYSTEM_BODYNUM (sizeof(alphCentauriSystem) / sizeof(OrbitalBody))
+
 struct OrbitalBody
 {
     float mass;		  // Masa en Kg
@@ -26,21 +33,21 @@ struct OrbitalBody
 
 struct OrbitalSim
 {
-   float time_step ;
+   float time_step;
    float time_total;
    int bodys;
    OrbitalBody * ptoOrbList; 
    char* date;
+   int nEphemirides;    //Añadido para simplificacion de codigo
 };
 
 OrbitalSim *makeOrbitalSim(float timeStep);
 void updateOrbitalSim(OrbitalSim *sim);
 void freeOrbitalSim(OrbitalSim *sim);
 void placeAsteroid(OrbitalBody* body, float centerMass);
-int searchIndex (OrbitalBody** list);
 
-void fillOrbBodiesList(OrbitalSim* sim, OrbitalBody* ephList, int nEphemerides);
-float getMostMassiveBody(OrbitalSim* sim, int nEphemerides);
+void fillOrbBodiesList(OrbitalSim* sim, OrbitalBody* ephList);
+float getMostMassiveBody(OrbitalSim* sim);
 float scaleRadius(float radius);
 
 //Vectorial Calculations
