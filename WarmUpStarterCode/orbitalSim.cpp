@@ -216,7 +216,7 @@ void calcAcc(OrbitalSim* sim) {
 
     for (int i = 0; i < NBODIES; i++)
     {
-        for (int j = i+1; j < NBODIES; j++)
+        for (int j = 0; j < SOLARSYSTEM_BODYNUM; j++)
         {
             distance = Vector3Length(Vector3Subtract(sim->ptoOrbList[i].pos, sim->ptoOrbList[j].pos));
             sim->ptoOrbList[i].acc = Vector3Add(sim->ptoOrbList[i].acc, calcAij(sim->ptoOrbList[i], sim->ptoOrbList[j], distance));
