@@ -1,24 +1,33 @@
 /*
- * Orbital simulation
- *
- * 25.03 EDA
- * Copyright (C) 2023 Marc S. Ressl
- */
+******************************************************
+* Orbital Simulation                          		 *
+*                                                    *
+* 25.03 EDA                                          *
+* Copyrigth (C) 2023 Marc. S Ressl                   *
+*                                                    *
+******************************************************
 
- /*
- 
- COSAS POR HACER:
+******************************************************
+* Autores:                                           *
+*                                                    *
+* 	- Aggosti, Santino.          					 *
+* 	- Domínguez, Agustín.                            *
+*	- López Franceschini, Santiago	                 *
+* 	- Sarmiento, Lourdes							 *
+*													 *
+* Materia:											 *
+*	- Estructura de Datos y Algoritmos				 *
+*													 *
+******************************************************
 
- Simplificar While loops; Hay varios que pueden ser simplificados unicamente en uno en el updateSimulationOrbitals
- Crear el codigo de la visualizacion (COMPLETO)
-
- Aumnetar eficiencia de calculo de sumatoria de fuerzas entre cuerpos celestiales.
-
- CORREJIR el uso de BODYS a sim.bodys / NO USAR WHILES, USAR UN FOR EN EL UPDATESIM
-
- Se usa siempre float porque vector3 esta definido con floats
- 
- */
+******************************************************
+* Descripción:                                       *
+*                                                    *
+*    realiza los calculos necesarios y los reemplaza *
+*	 en cada estructura								 *
+*                                                    *
+******************************************************
+*/
 
 #define _USE_MATH_DEFINES
 
@@ -104,7 +113,6 @@ OrbitalBody solSystem[] = {
     },
 };
 
-// Alpha Centauri system
 OrbitalBody alphCentauriSystem[] = {
     {
         2167000E24F,
@@ -122,25 +130,24 @@ OrbitalBody alphCentauriSystem[] = {
     },
 };
 
-// Gets a random value between min and max
 float getRandomFloat(float min, float max)
 {
     return min + (max - min) * rand() / (float)RAND_MAX;
 }
 
-// Make an orbital simulation
 OrbitalSim* makeOrbitalSim(float timeStep)      //Recibe el valor del timestep y devuelve la inicialización de la simulación
 {
 
-    OrbitalSim* sim;                      //Crea una variable de los datos de la simulación
-    sim = (OrbitalSim*)malloc(sizeof(OrbitalSim));
-    sim->time_total = 0;                         //Comienza el contador del tiempo
-    sim->time_step = timeStep;                   //Setea el timestep
+    OrbitalSim* sim; 
+
+    sim = ( OrbitalSim* ) malloc( sizeof ( OrbitalSim ));
+    sim->time_total = 0;                         
+    sim->time_step = timeStep;                   
     sim->bodys = NBODIES;                        //Setea la cantidad de cuerpos totales (Incluyendo Asteroides)
-    sim->nEphemirides = SOLARSYSTEM_BODYNUM;     //Setea la cantidad de cuerpos celestiales (Sin incluir los asteroides)
+    sim->nEphemirides = SOLARSYSTEM_BODYNUM;     
 
     OrbitalBody * list;
-    list = (OrbitalBody*)malloc(NBODIES * sizeof(OrbitalBody)); //Asigna memoria para crear la lista de todos los punteros a los bodys
+    list = (OrbitalBody*)malloc(NBODIES * sizeof(OrbitalBody)); 
     sim->ptoOrbList = list;
 
     fillOrbBodiesList(sim, solSystem);
@@ -166,7 +173,7 @@ void fillOrbBodiesList(OrbitalSim *sim, OrbitalBody * ephList) {  //Llena la lis
 
 // Esta Funcion asume que el cuerpo mas pesado se encontrara dentro de los cuerpos de ephemirides y no 
 // Entre los demas asteroides por ejemplo.
-float getMostMassiveBody(OrbitalSim *sim)     //Obtiene el cuerpo más masivo
+float getMostMassiveBody(OrbitalSim *sim)     
 {
     float maxMass = 0;
     for (int i = 0; i < sim->nEphemirides; i++)
@@ -180,7 +187,6 @@ float getMostMassiveBody(OrbitalSim *sim)     //Obtiene el cuerpo más masivo
 
 void placeAsteroid(OrbitalBody* body, float centerMass)
 {
-    // Logit distribution
     float x = getRandomFloat(0, 1);
     float l = logf(x) - logf(1 - x) + 1;
 
@@ -188,16 +194,14 @@ void placeAsteroid(OrbitalBody* body, float centerMass)
     float r = ASTEROIDS_MEAN_RADIUS * sqrtf(fabsf(l));
     float phi = getRandomFloat(0, 2 * M_PI);
 
-    // Surprise!
-    //phi = 0;
 
     // https://en.wikipedia.org/wiki/Circular_orbit#Velocity
     float v = sqrtf(GRAVITATIONAL_CONSTANT * centerMass / r) * getRandomFloat(0.6F, 1.2F);
     float vy = getRandomFloat(-1E2F, 1E2F);
 
-    // Fill in with your own fields:
-     body->mass = 1E12F;  // Typical asteroid weight: 1 billion tons
-     body->radius = scaleRadius(2E3F); // Typical asteroid radius: 2km
+    
+     body->mass = 1E12F;  
+     body->radius = scaleRadius(2E3F); 
      body->color = GREEN;
      body->pos = {r * cosf(phi), 0, r * sinf(phi)};
      body->vel = {-v * sinf(phi), vy, v * cosf(phi)};
@@ -218,9 +222,12 @@ void calcAcc(OrbitalSim* sim) {
     {
         for (int j = 0; j < SOLARSYSTEM_BODYNUM; j++)
         {
-            distance = Vector3Length(Vector3Subtract(sim->ptoOrbList[i].pos, sim->ptoOrbList[j].pos));
-            sim->ptoOrbList[i].acc = Vector3Add(sim->ptoOrbList[i].acc, calcAij(sim->ptoOrbList[i], sim->ptoOrbList[j], distance));
+            distance = Vector3Length ( Vector3Subtract ( sim->ptoOrbList[i].pos, sim->ptoOrbList[j].pos ) );
+
+            sim->ptoOrbList[i].acc = Vector3Add ( sim->ptoOrbList[i].acc, calcAij ( sim->ptoOrbList[i], sim->ptoOrbList[j], distance ) );
+
             Aji = calcAij(sim->ptoOrbList[j], sim->ptoOrbList[i], distance);
+
             sim->ptoOrbList[j].acc = Vector3Add(sim->ptoOrbList[j].acc, Aji);
         }
     }
@@ -262,8 +269,8 @@ for(int i = 0; i < NBODIES; i++){
     }
 }
 
-// Simulates a timestep
-// Simulates a timestep
+
+// Esta funcion simulate un timestep
 void updateOrbitalSim(OrbitalSim* sim)
 {
 

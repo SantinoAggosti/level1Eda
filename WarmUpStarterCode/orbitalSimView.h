@@ -1,9 +1,25 @@
 /*
- * Orbital simulation view
- *
- * 25.03 EDA
- * Copyright (C) 2023 Marc S. Ressl
- */
+******************************************************
+* Orbital Simulation                          		 *
+*                                                    *
+* 25.03 EDA                                          *
+* Copyrigth (C) 2023 Marc. S Ressl                   *
+*                                                    *
+******************************************************
+
+******************************************************
+* Autores:                                           *
+*                                                    *
+* 	- Aggosti, Santino.          					 *
+* 	- Domínguez, Agustín.                            *
+*	- López Franceschini, Santiago	                 *
+* 	- Sarmiento, Lourdes							 *
+*													 *
+* Materia:											 *
+*	- Estructura de Datos y Algoritmos				 *
+*													 *
+******************************************************
+*/
 
 #ifndef ORBITALSIMVIEW_H
 #define ORBITALSIMVIEW_H

@@ -1,10 +1,33 @@
 /*
- * Orbital simulation view
- *
- * 25.03 EDA
- * Copyright (C) 2023 Marc S. Ressl
- */
+******************************************************
+* Orbital Simulation                          		 *
+*                                                    *
+* 25.03 EDA                                          *
+* Copyrigth (C) 2023 Marc. S Ressl                   *
+*                                                    *
+******************************************************
 
+******************************************************
+* Autores:                                           *
+*                                                    *
+* 	- Aggosti, Santino.          					 *
+* 	- Domínguez, Agustín.                            *
+*	- López Franceschini, Santiago	                 *
+* 	- Sarmiento, Lourdes							 *
+*													 *
+* Materia:											 *
+*	- Estructura de Datos y Algoritmos				 *
+*													 *
+******************************************************
+
+******************************************************
+* Descripción:                                       *
+*                                                    *
+*    principalmente se encuentran las funciones      *
+*	 necesarias para dibujar los objetos	         *
+*                                                    *
+******************************************************
+*/
 #include <time.h>
 #include "orbitalSimView.h"
 
@@ -31,7 +54,7 @@ const char* getISODate(float currentTime) {
 }
 
 
-//Unicamente se van a dibujar como esferas los planetas.
+
 void renderOrbitalSim3D(OrbitalSim *sim, int index, Vector3 scaledPos)
 {
 
@@ -44,7 +67,7 @@ void renderOrbitalSim2D(OrbitalSim *sim, int index, Vector3 scaledPos)
         DrawPoint3D(scaledPos, sim->ptoOrbList[index].color);
 }
 
-//CON ESTE CORRE A 6FPS CON 1000 BODIES
+
 void renderSimulation(OrbitalSim* sim) {
     Vector3 scaledPosition;
     for (int i = 0; i < NBODIES; i++)

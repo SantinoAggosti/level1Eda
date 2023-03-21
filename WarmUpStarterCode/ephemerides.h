@@ -1,9 +1,32 @@
 /*
- * Ephemerides for orbital simulation
- *
- * 25.03 EDA
- * Copyright (C) 2023 by Marc S. Ressl
- */
+******************************************************
+* Orbital Simulation                          		 *
+*                                                    *
+* 25.03 EDA                                          *
+* Copyrigth (C) 2023 Marc. S Ressl                   *
+*                                                    *
+******************************************************
+
+******************************************************
+* Autores:                                           *
+*                                                    *
+* 	- Aggosti, Santino.          					 *
+* 	- Domínguez, Agustín.                            *
+*	- López Franceschini, Santiago	                 *
+* 	- Sarmiento, Lourdes							 *
+*													 *
+* Materia:											 *
+*	- Estructura de Datos y Algoritmos				 *
+*													 *
+******************************************************
+
+******************************************************
+* Descripción:                                       *
+*                                                    *
+*    define e inicializa los cuerpos                 *
+*													 *
+******************************************************
+*/
 
 #ifndef EPHEMERIDES_H
 #define EPHEMERIDES_H

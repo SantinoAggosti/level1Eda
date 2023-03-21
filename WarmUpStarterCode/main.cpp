@@ -1,12 +1,33 @@
-/*
- * Orbital simulation
- *
- * 25.03 EDA
- * Copyright (C) 2023 Marc S. Ressl
- *
- * Main module
- */
 
+/*
+******************************************************
+* Orbital Simulation                          		 *
+*                                                    *
+* 25.03 EDA                                          *
+* Copyrigth (C) 2023 Marc. S Ressl                   *
+*                                                    *
+******************************************************
+
+******************************************************
+* Autores:                                           *
+*                                                    *
+* 	- Aggosti, Santino.          					 *
+* 	- Domínguez, Agustín.                            *
+*	- López Franceschini, Santiago	                 *
+* 	- Sarmiento, Lourdes							 *
+*													 *
+* Materia:											 *
+*	- Estructura de Datos y Algoritmos				 *
+*													 *
+******************************************************
+
+******************************************************
+* Descripción:                                       *
+*                                                    *
+*    MAIN                                            *
+*													 *
+******************************************************
+*/
 #include "orbitalSim.h"
 #include "orbitalSimView.h"
 
@@ -20,55 +41,58 @@ int main()
 
     InitWindow(screenWidth, screenHeight, "EDA Orbital Simulation");
 
-    // Camera
     Camera3D camera;
+
     camera.position = {10.0f, 10.0f, 10.0f};
+
     camera.target = {0.0f, 0.0f, 0.0f};
+
     camera.up = {0.0f, 1.0f, 0.0f};
+
     camera.fovy = 45.0f;
+
     camera.projection = CAMERA_PERSPECTIVE;
+
     SetCameraMode(camera, CAMERA_FREE);
 
     SetCameraPanControl(MOUSE_BUTTON_LEFT);
 
-    // Orbital simulation
-    float fps = 60;							  // frames per second
-    float timeMultiplier = 50 * SECONDS_PER_DAY; // Simulation speed: 100 days per real second
+    float fps = 60;							  
+    float timeMultiplier = 50 * SECONDS_PER_DAY; 
     float timeStep = timeMultiplier / fps;
 
     OrbitalSim *simulation = makeOrbitalSim(timeStep);
 
-    
-    // Game loop
     while (!WindowShouldClose())
     {
-        // Update simulation
-        updateOrbitalSim(simulation);   //Nuestro
+        
+        updateOrbitalSim(simulation);   
 
-        // Camera
-        UpdateCamera(&camera);   //Biblioteca
+        UpdateCamera(&camera);   
 
-        // Render
-        BeginDrawing();          //Biblioteca
-        ClearBackground(BLACK);  //Biblioteca
+        BeginDrawing();    
+
+        ClearBackground(BLACK);
+
         DrawText(getISODate(simulation->time_total), 10, 40, 30, WHITE);
+
         DrawFPS(10,10);
-        BeginMode3D(camera);     //Biblioteca
+
+        BeginMode3D(camera);     
         //renderOrbitalSim3D(sim); //Nuestro
         
         DrawGrid(5, 5.0f);
 
         renderSimulation(simulation);
         
+        EndMode3D();             
 
-        EndMode3D();             //Biblioteca
-
-        EndDrawing();            //Biblioteca
+        EndDrawing();            
     }
 
-    CloseWindow();              //Biblioteca
+    CloseWindow();              
 
-    freeOrbitalSim(simulation);        //Nuestro
+    freeOrbitalSim(simulation);        
 
     return 0;
 }
