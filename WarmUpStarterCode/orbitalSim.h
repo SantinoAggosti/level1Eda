@@ -39,7 +39,7 @@
 
 #define GRAVITATIONAL_CONSTANT 6.6743E-11F
 #define ASTEROIDS_MEAN_RADIUS 4E11F
-#define NBODIES 1000
+#define NBODIES 10000
 
 #define SOLARSYSTEM_BODYNUM (sizeof(solSystem) / sizeof(OrbitalBody))
 #define ALPHACENTAURISYSTEM_BODYNUM (sizeof(alphCentauriSystem) / sizeof(OrbitalBody))
@@ -75,9 +75,9 @@ float getMostMassiveBody(OrbitalSim* sim);
 float scaleRadius(float radius);
 
 //Vectorial Calculations
-void calcAcc(OrbitalSim* sim);
+void calcValues(OrbitalSim* sim);
 Vector3 calcAij(OrbitalBody body_1, OrbitalBody body_2, float distance);
-void calcVel(OrbitalSim* sim);
-void calcPosition(OrbitalSim* sim);
+void calcVel(OrbitalSim* sim, int index);
+void calcPosition(OrbitalSim* sim, int index);
 
 #endif

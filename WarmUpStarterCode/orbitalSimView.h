@@ -26,7 +26,6 @@
 
 #include "orbitalSim.h"
 
-void SaveScaledPositions(Vector3* list, OrbitalSim* sim);
 void renderOrbitalSim3D(OrbitalSim *sim,int index, Vector3 pos);
 void renderOrbitalSim2D(OrbitalSim *sim, int index, Vector3 pos);
 void renderSimulation(OrbitalSim* sim);

@@ -192,8 +192,8 @@ void placeAsteroid(OrbitalBody* body, float centerMass)
 
     // https://mathworld.wolfram.com/DiskPointPicking.html
     float r = ASTEROIDS_MEAN_RADIUS * sqrtf(fabsf(l));
-    float phi = getRandomFloat(0, 2 * M_PI);
-
+    //float phi = getRandomFloat(0, 2 * M_PI);
+    float phi = 0;
 
     // https://en.wikipedia.org/wiki/Circular_orbit#Velocity
     float v = sqrtf(GRAVITATIONAL_CONSTANT * centerMass / r) * getRandomFloat(0.6F, 1.2F);
@@ -208,8 +208,9 @@ void placeAsteroid(OrbitalBody* body, float centerMass)
 }
 
 
-void calcAcc(OrbitalSim* sim) {
+void calcValues(OrbitalSim* sim) {
     Vector3 Aji;
+    Vector3 Aij;
     float distance;
 
     for (int i = 0; i < NBODIES; i++)
@@ -220,22 +221,27 @@ void calcAcc(OrbitalSim* sim) {
 
     for (int i = 0; i < NBODIES; i++)
     {
-        for (int j = 0; j < SOLARSYSTEM_BODYNUM; j++)
-        {
-            distance = Vector3Length ( Vector3Subtract ( sim->ptoOrbList[i].pos, sim->ptoOrbList[j].pos ) );
+        if (i < SOLARSYSTEM_BODYNUM) {
+            for (int j = i + 1; j < NBODIES; j++)
+            {
+                distance = Vector3Distance(sim->ptoOrbList[i].pos, sim->ptoOrbList[j].pos);
+                Aij = calcAij(sim->ptoOrbList[i], sim->ptoOrbList[j], distance * distance * distance);
 
-            sim->ptoOrbList[i].acc = Vector3Add ( sim->ptoOrbList[i].acc, calcAij ( sim->ptoOrbList[i], sim->ptoOrbList[j], distance ) );
+                sim->ptoOrbList[i].acc = Vector3Add(sim->ptoOrbList[i].acc, Aij);
+                Aji = Vector3Scale(Aij, (sim->ptoOrbList[i].mass / sim->ptoOrbList[j].mass));
+                sim->ptoOrbList[j].acc = Vector3Subtract(sim->ptoOrbList[j].acc, Aji);
 
-            Aji = calcAij(sim->ptoOrbList[j], sim->ptoOrbList[i], distance);
-
-            sim->ptoOrbList[j].acc = Vector3Add(sim->ptoOrbList[j].acc, Aji);
+            }
         }
+
+
+        calcVel(sim,i);
+        calcPosition(sim, i);
     }
 
 }
 
-Vector3 calcAij(OrbitalBody bodyi, OrbitalBody bodyj, float distance) {
-    float denominador = distance * distance * distance;
+Vector3 calcAij(OrbitalBody bodyi, OrbitalBody bodyj, float denominador) {
     if (denominador == 0)
     {
         return Vector3Zero();
@@ -248,25 +254,20 @@ Vector3 calcAij(OrbitalBody bodyi, OrbitalBody bodyj, float distance) {
     }
 }
 
-void calcVel(OrbitalSim * sim)
+void calcVel(OrbitalSim * sim, int index)
 {
     Vector3 newVel;
-    for (int i = 0; i < NBODIES; i++)
-    {
-        newVel = Vector3Add(sim->ptoOrbList[i].vel, (Vector3Scale(sim->ptoOrbList[i].acc, sim->time_step)));
-        sim->ptoOrbList[i].vel = newVel;
-    }
+        newVel = Vector3Add(sim->ptoOrbList[index].vel, (Vector3Scale(sim->ptoOrbList[index].acc, sim->time_step)));
+        sim->ptoOrbList[index].vel = newVel;
     
         
 }
 
-void calcPosition(OrbitalSim * sim) //Esta funcion asume que v(n+1), es decir, calcVel, ya fue llamada y es utilizada como tal en el calculo de la nueva posicion.
+void calcPosition(OrbitalSim * sim, int index) //Esta funcion asume que v(n+1), es decir, calcVel, ya fue llamada y es utilizada como tal en el calculo de la nueva posicion.
 {
 Vector3 newPosition = Vector3Zero();
-for(int i = 0; i < NBODIES; i++){
-    newPosition = Vector3Add(sim->ptoOrbList[i].pos, Vector3Scale(sim->ptoOrbList[i].vel, sim->time_step));
-    sim->ptoOrbList[i].pos = newPosition;
-    }
+    newPosition = Vector3Add(sim->ptoOrbList[index].pos, Vector3Scale(sim->ptoOrbList[index].vel, sim->time_step));
+    sim->ptoOrbList[index].pos = newPosition;
 }
 
 
@@ -275,9 +276,7 @@ void updateOrbitalSim(OrbitalSim* sim)
 {
 
     sim->time_total += sim->time_step;
-    calcAcc(sim);
-    calcVel(sim);
-    calcPosition(sim);
+    calcValues(sim);
 }
 
 void freeOrbitalSim(OrbitalSim *sim)
@@ -287,5 +286,5 @@ void freeOrbitalSim(OrbitalSim *sim)
 
 
 float scaleRadius(float radius) {
-    return  (0.005F * logf(radius));
+    return  (0.008F * logf(radius));
 }

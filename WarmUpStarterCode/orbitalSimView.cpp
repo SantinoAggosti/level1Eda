@@ -31,15 +31,6 @@
 #include <time.h>
 #include "orbitalSimView.h"
 
-
-
-void SaveScaledPositions(Vector3* list,OrbitalSim * sim) {
-    for (int i = 0; i < sim->bodys; i++)
-    {
-        list[i] = Vector3Scale(sim->ptoOrbList[i].pos, 1E-11);
-    }
-}
-
 const char* getISODate(float currentTime) {
     // Epoch: 2022-01-01
     struct tm epoch_tm = { 0, 0, 0, 1, 0, 122 };
@@ -64,35 +55,23 @@ void renderOrbitalSim3D(OrbitalSim *sim, int index, Vector3 scaledPos)
 
 void renderOrbitalSim2D(OrbitalSim *sim, int index, Vector3 scaledPos)
 {
-        DrawPoint3D(scaledPos, sim->ptoOrbList[index].color);
+    DrawPoint3D(scaledPos, sim->ptoOrbList[index].color); //DOCUMENTACION: "Draw a point in 3D space, actually a small line"
 }
 
 
-void renderSimulation(OrbitalSim* sim) {
-    Vector3 scaledPosition;
-    for (int i = 0; i < NBODIES; i++)
-    {
-        scaledPosition = Vector3Scale(sim->ptoOrbList[i].pos, 1E-11);
-        renderOrbitalSim2D(sim, i, scaledPosition);
-        renderOrbitalSim3D(sim, i, scaledPosition);
-    }
-}
-
-//CON ESTE CORRE A 40 FPS LOS 1000 BODIES, PERO LOS ASTEROIDES SON SOLO PUNTOS.
-/*
+// Esta funcion muestra en pantalla de forma esferica unicamente a los cuerpos celestiales principales, mientras que los asteroides son dibjados 
+// como puntos en 3D, que segun la documentacion, son basicamente lineas muy chicas. (Visibles en la escala de posicion).
 void renderSimulation(OrbitalSim *sim) {
     Vector3 scaledPosition;
-    for (int i = 0; i < sim->nEphemirides; i++)
+    for (int i = 0; i < NBODIES ;i++)
     {
         scaledPosition = Vector3Scale(sim->ptoOrbList[i].pos, 1E-11);
         renderOrbitalSim2D(sim, i, scaledPosition);
-        renderOrbitalSim3D(sim, i, scaledPosition);
+        if (i < sim->nEphemirides) {
+            renderOrbitalSim3D(sim, i, scaledPosition);
+        }
 
-    } for (int j = sim->nEphemirides; j < NBODIES; j++)
-    {
-        scaledPosition = Vector3Scale(sim->ptoOrbList[j].pos, 1E-11);
-        renderOrbitalSim2D(sim, j, scaledPosition);
     }
-}*/
+}
 
 

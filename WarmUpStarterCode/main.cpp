@@ -58,14 +58,13 @@ int main()
     SetCameraPanControl(MOUSE_BUTTON_LEFT);
 
     float fps = 60;							  
-    float timeMultiplier = 50 * SECONDS_PER_DAY; 
+    float timeMultiplier = 65 * SECONDS_PER_DAY; 
     float timeStep = timeMultiplier / fps;
 
     OrbitalSim *simulation = makeOrbitalSim(timeStep);
 
     while (!WindowShouldClose())
     {
-        
         updateOrbitalSim(simulation);   
 
         UpdateCamera(&camera);   
@@ -79,9 +78,8 @@ int main()
         DrawFPS(10,10);
 
         BeginMode3D(camera);     
-        //renderOrbitalSim3D(sim); //Nuestro
         
-        DrawGrid(5, 5.0f);
+        DrawGrid(10, 10.0f);
 
         renderSimulation(simulation);
         

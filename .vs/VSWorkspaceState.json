@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\build",
+    "\\build\\Debug",
     "\\WarmUpStarterCode"
   ],
-  "SelectedNode": "\\WarmUpStarterCode\\CMakeSettings.json",
+  "SelectedNode": "\\WarmUpStarterCode\\CMakeLists.txt",
   "PreviewInSolutionExplorer": false
 }
