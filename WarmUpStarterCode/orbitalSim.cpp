@@ -23,10 +23,24 @@
 ******************************************************
 * Descripción:                                       *
 *                                                    *
-*    realiza los calculos necesarios y los reemplaza *
+*    Realiza los calculos necesarios y los reemplaza *
 *	 en cada estructura								 *
 *                                                    *
 ******************************************************
+
+*************************************************************************
+* Respuesta a "Pasos Siguientes: Ítem 3":                               *
+*                                                                       *
+*    Por un lado decidimos dibujar a los asteroides como puntos en      *
+*  lugar de hacerlo como esferas, ya que compurtacionalmente esta forma *
+*  es más barato. Por otro lado mejoramos el cálculo de la aceleración: *
+*  simplificamos el cáculo de la aceleración del cuerpo i con respecto  *
+*  a las fuerzas del cuerpo i,                                          *
+*                                                                       *
+*   La complejidad de la simulación es O ( n^2 )                        *
+*                                                                       *
+*************************************************************************
+
 */
 
 #define _USE_MATH_DEFINES

@@ -1,0 +1,10 @@
+^C:\USERS\AGUSD\DESKTOP\NUEVA CARPETA\LEVEL1EDA\BUILD\CMAKEFILES\F7FE28D7599988063C1C793E164D7F12\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/agusd/Desktop/Nueva carpeta/level1Eda/WarmUpStarterCode" "-BC:/Users/agusd/Desktop/Nueva carpeta/level1Eda/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/agusd/Desktop/Nueva carpeta/level1Eda/build/WarmUpStarterCode.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
