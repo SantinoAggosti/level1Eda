@@ -40,7 +40,6 @@
 *   La complejidad de la simulación es O ( n^2 )                        *
 *                                                                       *
 *************************************************************************
-
 */
 
 #define _USE_MATH_DEFINES

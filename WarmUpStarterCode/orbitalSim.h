@@ -23,7 +23,7 @@
 ******************************************************
 * Descripción:                                       *
 *                                                    *
-*  se definen los planetas y las estructuras con     *
+*  Se definen los planetas y las estructuras con     *
 *  datos importantes			                     *
 *                                                    *
 ******************************************************
